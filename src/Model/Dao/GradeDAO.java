@@ -5,7 +5,6 @@ package Model.Dao;
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbCourse;
 import Model.Vo.DbUser;
-import com.sun.org.apache.bcel.internal.generic.FALOAD;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
