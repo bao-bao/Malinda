@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static Model.Dao.DAOFactory.*;
 
@@ -226,5 +227,32 @@ public class ControlCourseDAO {
         return message;
     }
 
-
+    public int getAllCourse(ArrayList<DbCourse> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.course ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                while (rs.next()) {
+                    DbCourse dbCourse = new DbCourse();
+                    dbCourse.setAll(rs);
+                    arrayList.add(dbCourse);
+                }
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
 }
