@@ -6,33 +6,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DbTeach {
-    private Integer professorid = 0;
-    private Integer courseid = 0;
+    private String professor = "";
+    private String course = "";
 
     public void setAll(ResultSet rs) {
         try{
-            this.setProfessorid(rs.getInt("professorid"));
-            this.setCourseid(rs.getInt("courseid"));
+            this.setProfessor(rs.getString("professor"));
+            this.setCourse(rs.getString("course"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Integer getProfessorid() {
-        return professorid;
+    public String getProfessor() {
+        return professor;
     }
 
-    public DbTeach setProfessorid(Integer professorid) {
-        this.professorid = professorid;
+    public DbTeach setProfessor(String professor) {
+        this.professor = professor;
         return this;
     }
 
-    public Integer getCourseid() {
-        return courseid;
+    public String getCourse() {
+        return course;
     }
 
-    public DbTeach setCourseid(Integer courseid) {
-        this.courseid = courseid;
+    public DbTeach setCourse(String course) {
+        this.course = course;
         return this;
     }
 }

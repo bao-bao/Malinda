@@ -12,7 +12,6 @@ public class DbUser {
     public static final int STUDENT = 1;
     public static final int PROFESSOR = 2;
 
-    private Integer userid = 0;
     private String name = "";
     private String password = "";
     private String major = "";
@@ -31,10 +30,6 @@ public class DbUser {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public Integer getUserid() {
-        return userid;
     }
 
     public String getName() {

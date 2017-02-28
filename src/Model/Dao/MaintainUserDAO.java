@@ -65,7 +65,7 @@ public class MaintainUserDAO {
         return message;
     }
 
-    private int validate(String name) {
+    public int validate(String name) {
         int message = FAILED;
         String sql = "select * from malinda.user where name = ? ";
         try {
@@ -92,15 +92,15 @@ public class MaintainUserDAO {
         return message;
     }
 
-    public int changePassword(String userid, String old_password, String new_password) {
+    public int changePassword(String user, String old_password, String new_password) {
         int message = FAILED;
         String sql = "update malinda.user "
                 + "set password = ? "
-                + "where userid = ? and u_pwd = ? ";
+                + "where name = ? and password = ? ";
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, new_password);
-            pstmt.setString(2, userid);
+            pstmt.setString(2, user);
             pstmt.setString(3, old_password);
             int result = pstmt.executeUpdate();
             if(result == 0) {

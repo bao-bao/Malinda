@@ -6,34 +6,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DbTake {
-    private Integer studentid = 0;
-    private Integer courseid = 0;
+    private String student = "";
+    private String course = "";
     private Double grade = 0.0;
 
     public void setAll(ResultSet rs) {
         try{
-            this.setStudentid(rs.getInt("studentid"));
-            this.setStudentid(rs.getInt("courseid"));
+            this.setStudent(rs.getString("student"));
+            this.setStudent(rs.getString("course"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Integer getStudentid() {
-        return studentid;
+    public String getStudent() {
+        return student;
     }
 
-    public DbTake setStudentid(Integer studentid) {
-        this.studentid = studentid;
+    public DbTake setStudent(String student) {
+        this.student = student;
         return this;
     }
 
-    public Integer getCourseid() {
-        return courseid;
+    public String getCourse() {
+        return course;
     }
 
-    public DbTake setCourseid(Integer courseid) {
-        this.courseid = courseid;
+    public DbTake setCourse(String course) {
+        this.course = course;
         return this;
     }
 

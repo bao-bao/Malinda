@@ -11,16 +11,8 @@ public class DAOFactory {
         return new MaintainUserDAO();
     }
 
-    static public RegisterDAO getRegisterDAO() {
-        return new RegisterDAO();
-    }
-
     static public GradeDAO getGradeDAO() {
         return new GradeDAO();
-    }
-
-    static public TeachDAO getTeachDAO() {
-        return new TeachDAO();
     }
 
     static public ControlCourseDAO getControlCourseDAO() {
