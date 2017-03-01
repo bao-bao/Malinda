@@ -45,7 +45,7 @@
                     class="caret"></b> </a>
                 <ul class="dropdown-menu animated fadeInRight">
                     <span class="arrow top"></span>
-                    <li><a href="signin.html" data-toggle="ajaxModal">Logout</a></li>
+                    <li><a href="signin.jsp" data-toggle="ajaxModal">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -57,11 +57,11 @@
                 <section class="vbox">
                     <header class="header bg-primary lter text-center clearfix">
                         <div class="btn-group">
-                            <button onclick="location='signup.html'" type="button" class="btn btn-sm btn-dark btn-icon"
+                            <button onclick="location='signup.jsp'" type="button" class="btn btn-sm btn-dark btn-icon"
                                     title="New project" disabled=""><i
                                     class="fa fa-plus"></i></button>
                             <div class="btn-group hidden-nav-xs">
-                                <button onclick="location='signup.html'" type="button" class="btn btn-sm btn-primary"
+                                <button onclick="location='signup.jsp'" type="button" class="btn btn-sm btn-primary"
                                         disabled="">
                                     Maintain
                                 </button>
@@ -80,7 +80,7 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Admin</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-admin.html"> <i class="fa fa-angle-right"></i> <span>Management</span>
+                                            <li><a href="table-admin.jsp"> <i class="fa fa-angle-right"></i> <span>Management</span>
                                             </a></li>
                                         </ul>
                                     </li>
@@ -88,7 +88,7 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Professor</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-professor.html"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="table-professor.jsp"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
                                         </ul>
                                     </li>
@@ -96,9 +96,9 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Students</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-student-grade.html"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="table-student-grade.jsp"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
-                                            <li><a href="table-student.html"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="table-student.jsp"> <i class="fa fa-angle-right"></i>
                                                 <span>Registration</span> </a></li>
                                         </ul>
                                     </li>
