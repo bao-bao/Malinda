@@ -11,10 +11,10 @@
 </head>
 <body>
 <section id="content" class="m-t-lg wrapper-md animated fadeInDown">
-    <div class="container aside-xxl"><a class="navbar-brand block" href="index.jsp">Notebook</a>
+    <div class="container aside-xxl"><a class="navbar-brand block" href="homepage.jsp">Notebook</a>
         <section class="panel panel-default m-t-lg bg-white">
             <header class="panel-heading text-center"><strong>Sign up</strong></header>
-            <form action="index.jsp" class="panel-body wrapper-lg">
+            <form action="homepage.jsp" class="panel-body wrapper-lg">
                 <div class="form-group">
                     <label class="control-label">Name</label>
                     <input type="text" placeholder="eg. Your name or company" class="form-control input-lg">

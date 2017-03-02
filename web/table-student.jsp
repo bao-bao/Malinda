@@ -70,7 +70,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li><a href="index.jsp"> <i
+                                    <li><a href="homepage.jsp"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -114,7 +114,7 @@
                 <section class="vbox">
                     <section class="scrollable padder">
                         <ul class="breadcrumb no-border no-radius b-b b-light pull-in">
-                            <li><a href="index.jsp"><i class="fa fa-home"></i> Home</a></li>
+                            <li><a href="homepage.jsp"><i class="fa fa-home"></i> Home</a></li>
                             <li><a href="#"> Student</a></li>
                             <li class="active"> All Courses</li>
                         </ul>

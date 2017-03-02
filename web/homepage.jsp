@@ -1,4 +1,6 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page import="Model.Vo.DbUser" %>
+<%@ page import="static Model.Vo.DbUser.*" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en" class="app">
 <head>
@@ -13,6 +15,7 @@
 <body>
 <section class="vbox">
     <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+
         <!-- label -->
         <div class="navbar-header aside-md">
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"><i
@@ -40,8 +43,10 @@
                     </section>
                 </section>
             </li>
+            <% DbUser user = (DbUser)(request.getSession().getAttribute("loginuser")); %>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
-                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span> John.Smith <b
+                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span>
+                <%= user.getName() %><b
                     class="caret"></b> </a>
                 <ul class="dropdown-menu animated fadeInRight">
                     <span class="arrow top"></span>
@@ -73,7 +78,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li class="active"><a href="index.jsp" class="active"> <i
+                                    <li class="active"><a href="homepage.jsp" class="active"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -117,7 +122,7 @@
                 <section class="vbox">
                     <section class="scrollable padder">
                         <ul class="breadcrumb no-border no-radius b-b b-light pull-in">
-                            <li><a href="index.jsp"><i class="fa fa-home"></i> Home</a></li>
+                            <li><a href="homepage.jsp"><i class="fa fa-home"></i> Home</a></li>
                             <li class="active">Basic Information</li>
                         </ul>
                         <div class="m-b-md">
@@ -138,8 +143,21 @@
                                                     <div class="thumb-lg"><img src="images/avatar.jpg"
                                                                                class="img-circle"></div>
                                                 </div>
-                                                <div class="h4 m-t m-b-xs">name</div>
-                                                <small class="text-muted m-b">level</small>
+                                                <div class="h4 m-t m-b-xs"><%= user.getName() %></div>
+                                                <%
+                                                    String level;
+                                                    switch (user.getLevel()) {
+                                                        case ADMINISTRATOR: level = "ADMINISTRATOR";
+                                                        break;
+                                                        case PROFESSOR: level = "PROFESSOR";
+                                                        break;
+                                                        case STUDENT: level = "STUDENT";
+                                                        break;
+                                                        default: level = "STUDENT";
+                                                        break;
+                                                    }
+                                                %>
+                                                <small class="text-muted m-b"><%= level %></small>
                                             </div>
                                         </div>
                                     </div>
@@ -168,6 +186,11 @@
                             </div>
                         </div>
                         <!-- numbers -->
+                        <%
+                            Integer studentNumber = (Integer)request.getAttribute("studentNumber");
+                            Integer professorNumber = (Integer)request.getAttribute("professorNumber");
+                            Integer courseNumber = (Integer)request.getAttribute("courseNumber");
+                        %>
                         <section class="panel panel-default">
                             <div class="row m-l-none m-r-none bg-light lter">
                                 <div class="col-sm-6 col-md-3 padder-v b-r b-light"><span
@@ -175,7 +198,7 @@
                                         class="fa fa-circle fa-stack-2x text-info"></i> <i
                                         class="fa fa-male fa-stack-1x text-white"></i> </span> <a class="clear"
                                                                                                   href="#"> <span
-                                        class="h3 block m-t-xs"><strong>52,000</strong></span>
+                                        class="h3 block m-t-xs"><strong><%= studentNumber %></strong></span>
                                     <small class="text-muted text-uc">Students</small>
                                 </a></div>
                                 <div class="col-sm-6 col-md-3 padder-v b-r b-light lt"><span
@@ -183,7 +206,7 @@
                                         class="fa fa-circle fa-stack-2x text-warning"></i> <i
                                         class="fa fa-male fa-stack-1x text-white"></i>  </span>
                                     <a class="clear" href="#"> <span class="h3 block m-t-xs"><strong
-                                            id="bugs">468</strong></span>
+                                            id="bugs"><%= professorNumber %></strong></span>
                                         <small class="text-muted text-uc">Professors</small>
                                     </a></div>
                                 <div class="col-sm-6 col-md-3 padder-v b-r b-light"><span
@@ -192,7 +215,7 @@
                                         class="fa fa-book fa-stack-1x text-white"></i>
                                 </span> <a class="clear" href="#"> <span
                                         class="h3 block m-t-xs"><strong
-                                        id="firers">359</strong></span>
+                                        id="firers"><%= courseNumber %></strong></span>
                                     <small class="text-muted text-uc">Courses</small>
                                 </a></div>
                                 <div class="col-sm-6 col-md-3 padder-v b-r b-light lt"><span

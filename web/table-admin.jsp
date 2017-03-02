@@ -70,7 +70,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li><a href="index.jsp"> <i
+                                    <li><a href="homepage.jsp"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li class="active"><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>

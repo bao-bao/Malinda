@@ -4,10 +4,13 @@ package Model.Dao;
 
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbUser;
+import com.sun.org.apache.bcel.internal.generic.FALOAD;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static Model.Dao.DAOFactory.*;
 
@@ -18,6 +21,7 @@ public class MaintainUserDAO {
     public MaintainUserDAO() {
         try {
             dbconn = new DatabaseConnection();
+            System.out.println(dbconn.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,6 +124,45 @@ public class MaintainUserDAO {
                 else {
                     conn.rollback();
                 }
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int signIn(String name, String password, ArrayList<DbUser> arrayList) {
+        int message = FAILED;
+        DbUser user = null;
+        String sql = "select * "
+                + "from malinda.user "
+                + "where name = ? ";
+        arrayList.clear();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                user = new DbUser();
+                user.setAll(rs);
+                arrayList.add(0, user);
+            }
+            if(user == null) {
+                message = FAILED;
+            }
+            else if(!user.getPassword().equals(password)) {
+                message = FAILED;
+            }
+            else {
+                message = SUCCESS;
+            }
+        } catch (SQLException e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
                 dbconn.close();
             } catch (Exception e) {
                 message = EXCEPTION;

@@ -7,7 +7,7 @@ public class DAOFactory {
     static public final int SUCCESS = 1;
     static public final int FAILED = -2;
 
-    static public MaintainUserDAO getMaintainStudentDAO() {
+    static public MaintainUserDAO getMaintainUserDAO() {
         return new MaintainUserDAO();
     }
 
