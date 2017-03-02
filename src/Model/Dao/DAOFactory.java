@@ -18,4 +18,8 @@ public class DAOFactory {
     static public ControlCourseDAO getControlCourseDAO() {
         return new ControlCourseDAO();
     }
+
+    static public StatisticsDAO getStatisticsDAO() {
+        return new StatisticsDAO();
+    }
 }

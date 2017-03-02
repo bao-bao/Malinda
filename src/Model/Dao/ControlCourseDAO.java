@@ -208,7 +208,7 @@ public class ControlCourseDAO {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                if (rs.getInt("level") == DbUser.ADMINISTATOR) {
+                if (rs.getInt("level") == DbUser.ADMINISTRATOR) {
                     message = SUCCESS;
                 }
             }

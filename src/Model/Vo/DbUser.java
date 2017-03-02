@@ -8,9 +8,10 @@ import java.sql.SQLException;
 
 
 public class DbUser {
-    public static final int ADMINISTATOR = 0;
+    public static final int ADMINISTRATOR = 0;
     public static final int STUDENT = 1;
     public static final int PROFESSOR = 2;
+    public static final int COURSE = 3;
 
     private String name = "";
     private String password = "";
