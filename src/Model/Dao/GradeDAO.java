@@ -90,37 +90,6 @@ public class GradeDAO {
         return message;
     }
 
-    public int getTeachedCourse(String professor, ArrayList<DbCourse> arrayList) {
-        int message = FAILED;
-        String sql = "select * from malinda.course where name in (select course from malinda.teach where professor = ?) ";
-        try {
-            conn.setAutoCommit(false);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, professor);
-            ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
-                while (rs.next()) {
-                    DbCourse dbCourse = new DbCourse();
-                    dbCourse.setAll(rs);
-                    arrayList.add(dbCourse);
-                }
-                message = SUCCESS;
-            }
-        } catch (Exception e) {
-            message = EXCEPTION;
-            e.printStackTrace();
-        } finally {
-            try {
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
-        }
-        return message;
-    }
-
-
     public int getTookStudent(String course, ArrayList<DbUser> arrayList) {
         int message = FAILED;
         String sql = "select * from malinda.user where name in (select student from malinda.take where course = ?) ";

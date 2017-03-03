@@ -4,6 +4,7 @@ package Model.Dao;
 
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbCourse;
+import Model.Vo.DbTake;
 import Model.Vo.DbUser;
 
 import java.sql.Connection;
@@ -62,8 +63,8 @@ public class ControlCourseDAO {
 
     public int registerCourse(String student, String course) {
         int message = FAILED;
-        String sql = "insert into malinda.take(student, course) " +
-                "values(?,?)";
+        String sql = "insert into malinda.take(student, course, grade) " +
+                "values(?,?,0) ";
         if (!conflict(student, course)) {
             try {
                 conn.setAutoCommit(false);
@@ -100,7 +101,7 @@ public class ControlCourseDAO {
         int message = SUCCESS;
         DbCourse dbCourse = new DbCourse();
         String search_sql = "select * from malinda.course where name = ? ";
-        String judge_sql = "select * from malinda.take where name = ? ";
+        String judge_sql = "select * from malinda.course where exists (select course from malinda.take where name = ?) ";
         String update_sql = "update malinda.course set number = ? where name = ? ";
         try {
             conn.setAutoCommit(false);
@@ -122,12 +123,12 @@ public class ControlCourseDAO {
                 j_pstmt.setString(1, student);
                 ResultSet rs = j_pstmt.executeQuery();
                 if (rs.next()) {
-                    while (rs.next()) {
+                    do {
                         if (rs.getInt("year") == dbCourse.getYear() && rs.getString("time") == dbCourse.getTime()) {
                             message = FAILED;
                             break;
                         }
-                    }
+                    } while (rs.next());
                 }
             }
             // do update
@@ -146,19 +147,6 @@ public class ControlCourseDAO {
         } catch (Exception e) {
             message = EXCEPTION;
             e.printStackTrace();
-        } finally {
-            try {
-                if(message == SUCCESS) {
-                    conn.commit();
-                }
-                else {
-                    conn.rollback();
-                }
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
         }
         return message == FAILED;
     }
@@ -215,13 +203,6 @@ public class ControlCourseDAO {
         } catch (Exception e) {
             message = EXCEPTION;
             e.printStackTrace();
-        } finally {
-            try {
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
         }
         return message;
     }
@@ -234,11 +215,127 @@ public class ControlCourseDAO {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                while (rs.next()) {
+                do {
                     DbCourse dbCourse = new DbCourse();
                     dbCourse.setAll(rs);
                     arrayList.add(dbCourse);
-                }
+                } while (rs.next());
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getTeachedCourse(String professor, ArrayList<DbCourse> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.course where name in (select course from malinda.teach where professor = ?) ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, professor);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+               do {
+                    DbCourse dbCourse = new DbCourse();
+                    dbCourse.setAll(rs);
+                    arrayList.add(dbCourse);
+                } while (rs.next());
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getAllCanRegisterCourse(String name, ArrayList<DbCourse> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.course where not exists (select course from malinda.take where take.student = ?) and course.state = 1 ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbCourse dbCourse = new DbCourse();
+                    dbCourse.setAll(rs);
+                    arrayList.add(dbCourse);
+                } while (rs.next());
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getAllRegisteredCourse(String name, ArrayList<DbTake> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.take where student = ? ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbTake dbTake = new DbTake();
+                    dbTake.setAll(rs);
+                    arrayList.add(dbTake);
+                } while (rs.next());
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getCourseStudentNumber(String course, ArrayList<Integer> arrayList) {
+        int message = FAILED;
+        String sql = "select count(*) from malinda.take where course = ? ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, course);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                arrayList.add(rs.getInt(1));
                 message = SUCCESS;
             }
         } catch (Exception e) {

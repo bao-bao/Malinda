@@ -1,4 +1,7 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page import="Model.Vo.DbUser" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="Model.Vo.DbCourse" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en" class="app">
 <head>
@@ -39,8 +42,9 @@
                     </section>
                 </section>
             </li>
+            <% DbUser user = (DbUser)(request.getSession().getAttribute("loginuser")); %>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
-                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span> John.Smith <b
+                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span> <%= user.getName() %> <b
                     class="caret"></b> </a>
                 <ul class="dropdown-menu animated fadeInRight">
                     <span class="arrow top"></span>
@@ -130,64 +134,35 @@
                                             <th>Course Name</th>
                                             <th>Time</th>
                                             <th>Year</th>
-                                            <th>Student Number</th>
-                                            <th>Real Student Number</th>
+                                            <th>Student Limit</th>
+                                            <th>Left Number</th>
                                             <th width="70"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <%
+                                            ArrayList<DbCourse> courses =  (ArrayList<DbCourse>)request.getAttribute("course");
+                                            ArrayList<Integer> numbers = (ArrayList<Integer>)request.getAttribute("studentNumber");
+                                            for(int i = 0; i < courses.size(); i++) {
+                                        %>
                                         <tr>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
+                                            <td><%= courses.get(i).getName() %></td>
+                                            <td><%= courses.get(i).getTime() %></td>
+                                            <td><%= courses.get(i).getYear() %></td>
+                                            <td><%= courses.get(i).getNumber() %></td>
+                                            <td><%= courses.get(i).getNumber() - numbers.get(i) %></td>
                                             <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
+                                                <form id="<%= i %>" method="post" action="register">
+                                                    <input type="hidden" name="courseName" value="<%= courses.get(i).getName() %>"/>
+                                                    <div class="btn-group"><a href="#" onclick="document.getElementById('<%= i %>').submit();" class="dropdown-toggle"
+                                                                                data-toggle="dropdown"><i
                                                         class="fa fa-plus"></i></a>
                                                 </div>
+                                                </form>
+
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <% } %>
                                         </tbody>
                                     </table>
                                 </section>
