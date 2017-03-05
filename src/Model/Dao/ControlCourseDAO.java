@@ -5,6 +5,7 @@ package Model.Dao;
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbCourse;
 import Model.Vo.DbTake;
+import Model.Vo.DbTeach;
 import Model.Vo.DbUser;
 
 import java.sql.Connection;
@@ -29,18 +30,35 @@ public class ControlCourseDAO {
 
     public int assignProfessor(String professor, String course) {
         int message = FAILED;
-        String sql = "insert into malinda.teach(professor, course) " +
+        String s_sql = "select * from malinda.teach where course = ? ";
+        String u_sql = "update malinda.teach set professor = ? where course = ? ";
+        String i_sql = "insert into malinda.teach(professor, course) " +
                 "values(?,?)";
         try {
             conn.setAutoCommit(false);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, professor);
-            pstmt.setString(2, course);
-            int result = pstmt.executeUpdate();
-            if (result == 0) {
-                message = FAILED;
+            PreparedStatement s_pstmt = conn.prepareStatement(s_sql);
+            s_pstmt.setString(1, course);
+            ResultSet rs = s_pstmt.executeQuery();
+            if(rs.next()) {
+                PreparedStatement u_pstmt = conn.prepareStatement(u_sql);
+                u_pstmt.setString(1, professor);
+                u_pstmt.setString(2, course);
+                int re = u_pstmt.executeUpdate();
+                if(re == 0) {
+                    message =FAILED;
+                } else {
+                    message = SUCCESS;
+                }
             } else {
-                message = SUCCESS;
+                PreparedStatement i_pstmt = conn.prepareStatement(i_sql);
+                i_pstmt.setString(1, professor);
+                i_pstmt.setString(2, course);
+                int result = i_pstmt.executeUpdate();
+                if (result == 0) {
+                    message = FAILED;
+                } else {
+                    message = SUCCESS;
+                }
             }
         } catch (Exception e) {
             message = EXCEPTION;
@@ -326,6 +344,35 @@ public class ControlCourseDAO {
         return message;
     }
 
+    public int getAllUnassignedCourse(ArrayList<DbCourse> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.course where not exists (select course from malinda.teach) ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbCourse dbCourse = new DbCourse();
+                    dbCourse.setAll(rs);
+                    arrayList.add(dbCourse);
+                } while (rs.next());
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
     public int getCourseStudentNumber(String course, ArrayList<Integer> arrayList) {
         int message = FAILED;
         String sql = "select count(*) from malinda.take where course = ? ";
@@ -336,6 +383,41 @@ public class ControlCourseDAO {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 arrayList.add(rs.getInt(1));
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getTeachedProfessor(String course, ArrayList<DbTeach> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.teach where course = ? ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, course);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                DbTeach teach = new DbTeach();
+                teach.setAll(rs);
+                arrayList.add(teach);
+                message = SUCCESS;
+            }
+            else {
+                DbTeach teach = new DbTeach();
+                teach.setCourse(course);
+                teach.setProfessor("null");
+                arrayList.add(teach);
                 message = SUCCESS;
             }
         } catch (Exception e) {

@@ -171,4 +171,62 @@ public class MaintainUserDAO {
         }
         return message;
     }
+
+    public int getAllStudent(ArrayList<DbUser> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.user where level = 1 ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbUser user = new DbUser();
+                    user.setAll(rs);
+                    arrayList.add(user);
+                } while (rs.next());
+            }
+            message = SUCCESS;
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getAllProfessor(ArrayList<DbUser> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.user where level = 2 ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbUser user = new DbUser();
+                    user.setAll(rs);
+                    arrayList.add(user);
+                } while (rs.next());
+            }
+            message = SUCCESS;
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
 }
