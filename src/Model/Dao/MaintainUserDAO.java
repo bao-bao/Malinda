@@ -28,7 +28,7 @@ public class MaintainUserDAO {
         conn = dbconn.getConnection();
     }
 
-    public int maintainUser(String name, DbUser dbuser, int level) {
+    public int maintainUser(String name, DbUser dbuser) {
         int message = FAILED;
         String sql = "insert into malinda.user(name, password, major, age, education, level) " +
                 "values(?,?,?,?,?,?)";
@@ -41,7 +41,7 @@ public class MaintainUserDAO {
                 pstmt.setString(3, dbuser.getMajor());
                 pstmt.setInt(4, dbuser.getAge());
                 pstmt.setString(5, dbuser.getEducation());
-                pstmt.setInt(6, level);
+                pstmt.setInt(6, dbuser.getLevel());
                 int result = pstmt.executeUpdate();
                 if(result == 0) {
                     message = FAILED;

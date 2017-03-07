@@ -1,8 +1,8 @@
-﻿<%@ page import="Model.Vo.DbUser" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="Model.Vo.DbCourse" %>
-<%@ page import="java.sql.CallableStatement" %>
+﻿<%@ page import="Model.Vo.DbCourse" %>
 <%@ page import="Model.Vo.DbTeach" %>
+<%@ page import="Model.Vo.DbUser" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="static Model.Vo.DbCourse.OPEN" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en" class="app">
@@ -168,10 +168,10 @@
                             <section class="scrollable wrapper w-f">
                                 <section class="panel panel-default">
                                     <div class="table-responsive">
-                                        <% String tabletype = (String)request.getAttribute("tabletype"); %>
+                                        <% String tabletype = (String) request.getAttribute("tabletype"); %>
                                         <%
-                                            if(tabletype == "student") {
-                                                ArrayList<DbUser> students = (ArrayList<DbUser>)request.getAttribute("student");
+                                            if (tabletype == "student") {
+                                                ArrayList<DbUser> students = (ArrayList<DbUser>) request.getAttribute("student");
                                         %>
                                         <table class="table table-striped m-b-none">
                                             <thead>
@@ -187,21 +187,25 @@
                                             </thead>
                                             <tbody>
                                             <%
-                                                for(int i = 0; i < students.size(); i++) {
+                                                for (int i = 0; i < students.size(); i++) {
                                             %>
                                             <tr>
-                                                <td><%= students.get(i).getName() %></td>
-                                                <td><%= students.get(i).getAge() %></td>
-                                                <td><%= students.get(i).getEducation() %></td>
-                                                <td><%= students.get(i).getMajor() %></td>
+                                                <td><%= students.get(i).getName() %>
+                                                </td>
+                                                <td><%= students.get(i).getAge() %>
+                                                </td>
+                                                <td><%= students.get(i).getEducation() %>
+                                                </td>
+                                                <td><%= students.get(i).getMajor() %>
+                                                </td>
                                             </tr>
                                             <% } %>
                                             </tbody>
                                         </table>
-                                        <% } else if(tabletype == "professor") {
-                                                ArrayList<DbUser> professor = (ArrayList<DbUser>)request.getAttribute("professor");
+                                        <% } else if (tabletype == "professor") {
+                                            ArrayList<DbUser> professor = (ArrayList<DbUser>) request.getAttribute("professor");
                                         %>
-                                            <table class="table table-striped m-b-none">
+                                        <table class="table table-striped m-b-none">
                                             <thead>
                                             <tr>
                                                 <th class="th-sortable" data-toggle="class">Name <span
@@ -215,57 +219,91 @@
                                             </thead>
                                             <tbody>
                                             <%
-                                                for(int i = 0; i < professor.size(); i++) {
+                                                for (int i = 0; i < professor.size(); i++) {
                                             %>
                                             <tr>
-                                                <td><%= professor.get(i).getName() %></td>
-                                                <td><%= professor.get(i).getAge() %></td>
-                                                <td><%= professor.get(i).getEducation() %></td>
-                                                <td><%= professor.get(i).getMajor() %></td>
+                                                <td><%= professor.get(i).getName() %>
+                                                </td>
+                                                <td><%= professor.get(i).getAge() %>
+                                                </td>
+                                                <td><%= professor.get(i).getEducation() %>
+                                                </td>
+                                                <td><%= professor.get(i).getMajor() %>
+                                                </td>
                                             </tr>
                                             <% } %>
                                             </tbody>
                                         </table>
-                                        <% } else if(tabletype == "course") {
-                                                ArrayList<DbCourse> course = (ArrayList<DbCourse>)request.getAttribute("course");
-                                                ArrayList<DbTeach> teach = (ArrayList<DbTeach>)request.getAttribute("professor");
+                                        <% } else if (tabletype == "course") {
+                                            ArrayList<DbCourse> course = (ArrayList<DbCourse>) request.getAttribute("course");
+                                            ArrayList<DbTeach> teach = (ArrayList<DbTeach>) request.getAttribute("professor");
                                         %>
                                         <table class="table table-striped m-b-none text-sm">
-                                        <thead>
-                                        <tr>
-                                            <th>Course Name</th>
-                                            <th>Time</th>
-                                            <th>Year</th>
-                                            <th>Student Limit</th>
-                                            <th>Professor</th>
-                                            <th width="70"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <%
-                                            for(int i = 0; i < course.size(); i++) {
-                                        %>
-                                        <tr>
-                                            <td><%= course.get(i).getName() %></td>
-                                            <td><%= course.get(i).getTime() %></td>
-                                            <td><%= course.get(i).getYear() %></td>
-                                            <td><%= course.get(i).getNumber() %></td>
-                                            <td>
-                                                <form id="<%= i %>" method="post" action="assignprofessor">
-                                                    <input type="hidden" name="courseName" value="<%= course.get(i).getName() %>"/>
-                                                    <input value="<%= teach.get(i).getProfessor() %>" name="professorName"/>
-                                                </form>
-                                            </td>
-                                            <td class="text-right">
-                                                    <div class="btn-group"><a href="#" onclick="document.getElementById('<%= i %>').submit();" class="dropdown-toggle"
+                                            <thead>
+                                            <tr>
+                                                <th>Course Name</th>
+                                                <th>Time</th>
+                                                <th>Year</th>
+                                                <th>Student Limit</th>
+                                                <th>Professor</th>
+                                                <th>State</th>
+                                                <th width="70"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <%
+                                                for (int i = 0; i < course.size(); i++) {
+                                            %>
+                                            <tr>
+                                                <td><%= course.get(i).getName() %>
+                                                </td>
+                                                <td><%= course.get(i).getTime() %>
+                                                </td>
+                                                <td><%= course.get(i).getYear() %>
+                                                </td>
+                                                <td><%= course.get(i).getNumber() %>
+                                                </td>
+                                                <td>
+                                                    <form id="<%= i %>" method="post" action="assignprofessor">
+                                                        <input type="hidden" name="courseName"
+                                                               value="<%= course.get(i).getName() %>"/>
+                                                        <input value="<%= teach.get(i).getProfessor() %>"
+                                                               name="professorName"/>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                        <%
+                                                    if(course.get(i).getState() == OPEN) {
+
+                                                %>
+                                                <td>
+                                                    <div class="btn-group"><a href="#" class="dropdown-toggle"
                                                                               data-toggle="dropdown"><i
                                                             class="fa fa-plus"></i></a>
                                                     </div>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                        </tbody>
-                                    </table>
+                                                </td>
+                                                <%
+                                                } else {
+                                                %>
+                                                <td>
+                                                    <div class="btn-group"><a href="#" class="dropdown-toggle"
+                                                                              data-toggle="dropdown"><i
+                                                            class="fa fa-plus"></i></a>
+                                                    </div>
+                                                </td>
+                                                <% } %>
+                                                <td class="text-right" >
+                                                    <div class="btn-group"><a href="#"
+                                                                              onclick="document.getElementById('<%= i %>').submit();"
+                                                                              class="dropdown-toggle"
+                                                                              data-toggle="dropdown"><i
+                                                            class="fa fa-plus"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                            </tbody>
+                                        </table>
                                         <% } %>
                                     </div>
                                 </section>

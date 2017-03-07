@@ -115,7 +115,7 @@ public class ControlCourseDAO {
         return message;
     }
 
-    public boolean conflict(String student, String course) {
+    private boolean conflict(String student, String course) {
         int message = SUCCESS;
         DbCourse dbCourse = new DbCourse();
         String search_sql = "select * from malinda.course where name = ? ";
@@ -131,6 +131,9 @@ public class ControlCourseDAO {
                 dbCourse.setAll(result);
                 if (dbCourse.getState() == DbCourse.CLOSE || dbCourse.getNumber() == 0) {
                     message = FAILED;
+                }
+                if(dbCourse.getNumber() == 1) {
+                    autoClose(course);
                 }
             } else {
                 throw new Exception();
@@ -167,6 +170,38 @@ public class ControlCourseDAO {
             e.printStackTrace();
         }
         return message == FAILED;
+    }
+
+    private int autoClose(String course) {
+        int message = FAILED;
+        String sql = "update malinda.course "
+                + "set state = 2 "
+                + "where name = ? ";
+            try {
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, course);
+                int result = pstmt.executeUpdate();
+                if (result == 0) {
+                    message = FAILED;
+                } else {
+                    message = SUCCESS;
+                }
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (message == SUCCESS) {
+                        conn.commit();
+                    } else {
+                        conn.rollback();
+                    }
+                } catch (Exception e) {
+                    message = EXCEPTION;
+                    e.printStackTrace();
+                }
+            }
+        return message;
     }
 
     public int changeState(String name, String course, int state) {
@@ -418,6 +453,36 @@ public class ControlCourseDAO {
                 teach.setCourse(course);
                 teach.setProfessor("null");
                 arrayList.add(teach);
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getAllStudentInCourse(String course, ArrayList<DbUser> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.take where course = ? ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, course);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                do {
+                    DbUser user = new DbUser();
+                    user.setAll(rs);
+                    arrayList.add(user);
+                } while (rs.next());
                 message = SUCCESS;
             }
         } catch (Exception e) {

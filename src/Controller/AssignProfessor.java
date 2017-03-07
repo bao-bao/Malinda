@@ -37,6 +37,19 @@ public class AssignProfessor extends HttpServlet {
                     break;
             }
         }
+        Integer status = Integer.valueOf(request.getParameter("state"));
+        if(status != null && course != null) {
+            int state = (status==1 ? 2:1);
+            int message = DAOFactory.getControlCourseDAO().changeState(user.getName(), course, state);
+            switch (message) {
+                case SUCCESS:
+                    break;
+                case FAILED:
+                response.getWriter().append("web wrong");
+                default:
+                    break;
+            }
+        }
         doGet(request, response);
     }
 
