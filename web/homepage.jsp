@@ -78,7 +78,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li class="active"><a href="homepage.jsp" class="active"> <i
+                                    <li class="active"><a href="homepage" class="active"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -93,7 +93,7 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Professor</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-professor.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mycourse"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
                                         </ul>
                                     </li>
@@ -101,9 +101,9 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Students</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-student-grade.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mygrade"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
-                                            <li><a href="table-student.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="register"> <i class="fa fa-angle-right"></i>
                                                 <span>Registration</span> </a></li>
                                         </ul>
                                     </li>
@@ -127,7 +127,7 @@
                         </ul>
                         <div class="m-b-md">
                             <h3 class="m-b-none">Basics</h3>
-                            <small>Welcome back, Admin</small>
+                            <small>Welcome back, <%=user.getName()%></small>
                         </div>
                         <!-- self and calender -->
                         <div class="row">

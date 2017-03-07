@@ -4,6 +4,8 @@ package Model.Dao;
 
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbCourse;
+import Model.Vo.DbTake;
+import Model.Vo.DbTeach;
 import Model.Vo.DbUser;
 
 import java.sql.Connection;
@@ -30,7 +32,7 @@ public class GradeDAO {
         int message = FAILED;
         String sql = "update malinda.take "
                 + "set grade = ? "
-                + "where name = ? and course = ? ";
+                + "where student = ? and course = ? ";
         if(validate(professor) == SUCCESS) {
             try {
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -79,30 +81,23 @@ public class GradeDAO {
         } catch (Exception e) {
             message = EXCEPTION;
             e.printStackTrace();
-        } finally {
-            try {
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
         }
         return message;
     }
 
-    public int getTeachedCourse(String professor, ArrayList<DbCourse> arrayList) {
+    public int getTookStudent(String course, ArrayList<DbUser> arrayList) {
         int message = FAILED;
-        String sql = "select * from malinda.course where name in (select course from malinda.teach where professor = ?) ";
+        String sql = "select * from malinda.user where name in (select student from malinda.take where course = ?) ";
         try {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, professor);
+            pstmt.setString(1, course);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 while (rs.next()) {
-                    DbCourse dbCourse = new DbCourse();
-                    dbCourse.setAll(rs);
-                    arrayList.add(dbCourse);
+                    DbUser dbUser = new DbUser();
+                    dbUser.setAll(rs);
+                    arrayList.add(dbUser);
                 }
                 message = SUCCESS;
             }
@@ -120,21 +115,21 @@ public class GradeDAO {
         return message;
     }
 
-
-    public int getTookStudent(String course, ArrayList<DbUser> arrayList) {
+    public int getAllStudentGrade(String course, ArrayList<DbTake> arrayList) {
         int message = FAILED;
-        String sql = "select * from malinda.user where name in (select student from malinda.take where course = ?) ";
+        String sql = "select * from malinda.take where course = ? ";
         try {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, course);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                while (rs.next()) {
-                    DbUser dbUser = new DbUser();
-                    dbUser.setAll(rs);
-                    arrayList.add(dbUser);
-                }
+               do {
+                    DbTake dbTake = new DbTake();
+                    dbTake.setAll(rs);
+                    dbTake.setGrade(rs.getDouble("grade"));
+                    arrayList.add(dbTake);
+                } while (rs.next());
                 message = SUCCESS;
             }
         } catch (Exception e) {

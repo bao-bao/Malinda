@@ -13,7 +13,7 @@ public class DbTake {
     public void setAll(ResultSet rs) {
         try{
             this.setStudent(rs.getString("student"));
-            this.setStudent(rs.getString("course"));
+            this.setCourse(rs.getString("course"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

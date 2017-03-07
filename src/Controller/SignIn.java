@@ -1,4 +1,6 @@
-package Controller;/* Created by AMXPC on 2017/3/2. */
+package Controller;
+
+/* Created by AMXPC on 2017/3/2. */
 
 import Model.Dao.DAOFactory;
 import Model.Vo.DbUser;

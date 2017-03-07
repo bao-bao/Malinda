@@ -1,9 +1,12 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page import="Model.Vo.DbUser" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="Model.Vo.DbCourse" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en" class="app">
 <head>
     <meta charset="utf-8"/>
-    <title>Notebook | Web Application</title>
+    <title>Course Registration</title>
     <meta name="description"
           content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -12,6 +15,7 @@
 <body>
 <section class="vbox">
     <header class="bg-dark dk header navbar navbar-fixed-top-xs">
+
         <!-- label -->
         <div class="navbar-header aside-md">
             <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"><i
@@ -39,9 +43,11 @@
                     </section>
                 </section>
             </li>
+            <% DbUser user = (DbUser)(request.getSession().getAttribute("loginuser")); %>
             <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
-                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span> John.Smith <b
-                    class="caret"></b> </a>
+                    class="thumb-sm avatar pull-left"> <img src="images/avatar.jpg"> </span>
+                <%= user.getName() %><b
+                        class="caret"></b> </a>
                 <ul class="dropdown-menu animated fadeInRight">
                     <span class="arrow top"></span>
                     <li><a href="signin.jsp" data-toggle="ajaxModal">Logout</a></li>
@@ -56,10 +62,11 @@
                     <header class="header bg-primary lter text-center clearfix">
                         <div class="btn-group">
                             <button onclick="location='signup.jsp'" type="button" class="btn btn-sm btn-dark btn-icon"
-                                    title="New project"><i
+                                    title="New project" disabled=""><i
                                     class="fa fa-plus"></i></button>
                             <div class="btn-group hidden-nav-xs">
-                                <button onclick="location='signup.jsp'" type="button" class="btn btn-sm btn-primary">
+                                <button onclick="location='signup.jsp'" type="button" class="btn btn-sm btn-primary"
+                                        disabled="">
                                     Maintain
                                 </button>
                             </div>
@@ -70,7 +77,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li><a href="homepage.jsp"> <i
+                                    <li class="active"><a href="homepage" class="active"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -85,17 +92,17 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Professor</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-professor.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mycourse"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
                                         </ul>
                                     </li>
-                                    <li class="active"><a href="#"> <i class="fa fa-pencil icon"> <b class="bg-info"></b>
+                                    <li><a href="#"> <i class="fa fa-pencil icon"> <b class="bg-info"></b>
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Students</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-student-grade.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mygrade"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
-                                            <li class="active"><a href="table-student.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="register"> <i class="fa fa-angle-right"></i>
                                                 <span>Registration</span> </a></li>
                                         </ul>
                                     </li>
@@ -130,64 +137,35 @@
                                             <th>Course Name</th>
                                             <th>Time</th>
                                             <th>Year</th>
-                                            <th>Student Number</th>
-                                            <th>Real Student Number</th>
+                                            <th>Student Limit</th>
+                                            <th>Left Number</th>
                                             <th width="70"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <%
+                                            ArrayList<DbCourse> courses =  (ArrayList<DbCourse>)request.getAttribute("course");
+                                            ArrayList<Integer> numbers = (ArrayList<Integer>)request.getAttribute("studentNumber");
+                                            for(int i = 0; i < courses.size(); i++) {
+                                        %>
                                         <tr>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
-                                            <td>App prototype design</td>
+                                            <td><%= courses.get(i).getName() %></td>
+                                            <td><%= courses.get(i).getTime() %></td>
+                                            <td><%= courses.get(i).getYear() %></td>
+                                            <td><%= courses.get(i).getNumber() %></td>
+                                            <td><%= courses.get(i).getNumber() - numbers.get(i) %></td>
                                             <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
+                                                <form id="<%= i %>" method="post" action="register">
+                                                    <input type="hidden" name="courseName" value="<%= courses.get(i).getName() %>"/>
+                                                    <div class="btn-group"><a href="#" onclick="document.getElementById('<%= i %>').submit();" class="dropdown-toggle"
+                                                                                data-toggle="dropdown"><i
                                                         class="fa fa-plus"></i></a>
                                                 </div>
+                                                </form>
+
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td>Design documents</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td>UI toolkit</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td>Testing</td>
-                                            <td class="text-right">
-                                                <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                          data-toggle="dropdown"><i
-                                                        class="fa fa-plus"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <% } %>
                                         </tbody>
                                     </table>
                                 </section>
