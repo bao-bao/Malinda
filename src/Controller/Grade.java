@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static Model.Dao.DAOFactory.*;
 
-@WebServlet(name = "Grade", urlPatterns = {"grade"})
+@WebServlet(name = "Grade", urlPatterns = {"/grade"})
 public class Grade extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DbUser user = (DbUser) request.getSession().getAttribute("loginuser");

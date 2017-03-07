@@ -13,7 +13,7 @@ import java.io.IOException;
 import static Model.Dao.DAOFactory.*;
 import static Model.Vo.DbUser.*;
 
-@WebServlet(name = "Maintain", urlPatterns = "maintain")
+@WebServlet(name = "Maintain", urlPatterns = "/maintain")
 public class Maintain extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DbUser user = (DbUser) request.getSession().getAttribute("loginuser");
