@@ -1,7 +1,7 @@
 # Malinda
 ## JavaEE Course Project
 
-Database: 100.64.11.43
+Database: 100.64.11.43 (only in Jishi building)
 
 Platform: Intellij idea
 
