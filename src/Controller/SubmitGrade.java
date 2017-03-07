@@ -2,6 +2,8 @@ package Controller;/* Created by AMXPC on 2017/3/6. */
 
 import Model.Dao.DAOFactory;
 import Model.Vo.DbCourse;
+import Model.Vo.DbTake;
+import Model.Vo.DbTeach;
 import Model.Vo.DbUser;
 
 import javax.servlet.ServletException;
@@ -23,12 +25,25 @@ public class SubmitGrade extends HttpServlet {
         String course = request.getParameter("course");
         if(name != null && course != null) {
             ArrayList<DbUser> students = new ArrayList<>();
+            ArrayList<DbTake> takes = new ArrayList<>();
             int message = DAOFactory.getControlCourseDAO().getAllStudentInCourse(course, students);
+            int message1 = DAOFactory.getGradeDAO().getAllStudentGrade(course, takes);
             switch (message) {
                 case SUCCESS:
-                    request.setAttribute("student", students);
-                    request.setAttribute("course", "course");
-                    request.getRequestDispatcher("/table-grade.jsp").forward(request, response);
+                    switch (message1) {
+                        case SUCCESS:
+                            request.setAttribute("student", students);
+                            request.setAttribute("take", takes);
+                            request.setAttribute("course", "course");
+                            request.getRequestDispatcher("/table-grade.jsp").forward(request, response);
+                            break;
+                        case FAILED:
+                            response.getWriter().append("web wrong");
+                            break;
+                        default:
+                            break;
+                    }
+
                     break;
                 case FAILED:
                     response.getWriter().append("web wrong");

@@ -4,6 +4,8 @@ package Model.Dao;
 
 import Model.Dbc.DatabaseConnection;
 import Model.Vo.DbCourse;
+import Model.Vo.DbTake;
+import Model.Vo.DbTeach;
 import Model.Vo.DbUser;
 
 import java.sql.Connection;
@@ -103,6 +105,37 @@ public class GradeDAO {
                     DbUser dbUser = new DbUser();
                     dbUser.setAll(rs);
                     arrayList.add(dbUser);
+                }
+                message = SUCCESS;
+            }
+        } catch (Exception e) {
+            message = EXCEPTION;
+            e.printStackTrace();
+        } finally {
+            try {
+                dbconn.close();
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public int getAllStudentGrade(String course, ArrayList<DbTake> arrayList) {
+        int message = FAILED;
+        String sql = "select * from malinda.take where course = ? ";
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, course);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                while (rs.next()) {
+                    DbTake dbTake = new DbTake();
+                    dbTake.setAll(rs);
+                    dbTake.setGrade(rs.getDouble("grade"));
+                    arrayList.add(dbTake);
                 }
                 message = SUCCESS;
             }
