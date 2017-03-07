@@ -3,6 +3,7 @@ package Model.Dao;
 /* Created by AMXPC on 2017/2/27. */
 
 import Model.Dbc.DatabaseConnection;
+import Model.Vo.DbCourse;
 import Model.Vo.DbUser;
 import com.sun.org.apache.bcel.internal.generic.FALOAD;
 
@@ -26,6 +27,46 @@ public class MaintainUserDAO {
             e.printStackTrace();
         }
         conn = dbconn.getConnection();
+    }
+    public int maintainCourse(String name, DbCourse course) {
+        int message = FAILED;
+        String sql = "insert into malinda.course(name, year, time, credit, number, state) " +
+                "values(?,?,?,?,?,?)";
+        if(validate(name) == SUCCESS) {
+            try {
+                conn.setAutoCommit(false);
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, course.getName());
+                pstmt.setInt(2, course.getYear());
+                pstmt.setString(3, course.getTime());
+                pstmt.setInt(4, course.getCredit());
+                pstmt.setInt(5, course.getNumber());
+                pstmt.setInt(6, course.getState());
+                int result = pstmt.executeUpdate();
+                if(result == 0) {
+                    message = FAILED;
+                }
+                else {
+                    message = SUCCESS;
+                }
+            } catch (Exception e) {
+                message = EXCEPTION;
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (message == FAILED) {
+                        conn.rollback();
+                    } else {
+                        conn.commit();
+                    }
+                    dbconn.close();
+                } catch (Exception e) {
+                    message = EXCEPTION;
+                    e.printStackTrace();
+                }
+            }
+        }
+        return message;
     }
 
     public int maintainUser(String name, DbUser dbuser) {
@@ -85,13 +126,6 @@ public class MaintainUserDAO {
         } catch (Exception e) {
             message = EXCEPTION;
             e.printStackTrace();
-        } finally {
-            try {
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
         }
         return message;
     }

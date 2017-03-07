@@ -33,7 +33,7 @@ public class RegisterCourse extends HttpServlet {
                     request.getRequestDispatcher( "/table-student.jsp").forward(request,response);
                     break;
                 case FAILED:
-                    response.getWriter().append("web wrong");
+                    request.getRequestDispatcher( "/table-student.jsp").forward(request,response);
                     break;
                 default:
                     break;
@@ -57,9 +57,9 @@ public class RegisterCourse extends HttpServlet {
                 case SUCCESS:
                     request.setAttribute("course", dbCourses);
                     ArrayList<Integer> courseStudentNumber = new ArrayList<>();
-                    for(int i = 0; i < dbCourses.size(); i++) {
-                        int message1 = DAOFactory.getControlCourseDAO().getCourseStudentNumber(dbCourses.get(i).getName(), courseStudentNumber);
-                        if(message1 == FAILED) {
+                    for (DbCourse dbCourse : dbCourses) {
+                        int message1 = DAOFactory.getControlCourseDAO().getCourseStudentNumber(dbCourse.getName(), courseStudentNumber);
+                        if (message1 == FAILED) {
                             response.getWriter().append("web wrong");
                             break;
                         }

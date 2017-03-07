@@ -6,7 +6,7 @@
 <html lang="en" class="app">
 <head>
     <meta charset="utf-8"/>
-    <title>Notebook | Web Application</title>
+    <title>Course Registration</title>
     <meta name="description"
           content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -77,7 +77,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li class="active"><a href="homepage.jsp" class="active"> <i
+                                    <li><a href="homepage" class="active"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -88,11 +88,11 @@
                                             </a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="#"> <i class="fa fa-file-text icon"> <b class="bg-primary"></b>
+                                    <li class="active"><a href="#"> <i class="fa fa-file-text icon"> <b class="bg-primary"></b>
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Professor</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-professor.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mycourse"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
                                         </ul>
                                     </li>
@@ -145,14 +145,15 @@
                                         </thead>
                                         <tbody>
                                         <%
-                                            for(int i = 0; i < student.size() && i % 2 == 0; i++) {
+                                            for(int i = 0; i < take.size(); i++) {
+                                                if(i % 2 == 0) {
                                         %>
                                         <tr>
-                                            <td><%= student.get(i).getName() %></td>
+                                            <td><%= take.get(i).getStudent() %></td>
                                             <td>
                                                 <form id="<%= i %>" method="post" action="grade">
                                                 <input type="hidden" name="student"
-                                                       value="<%= student.get(i).getName() %>"/>
+                                                       value="<%= take.get(i).getStudent() %>"/>
                                                 <input type="hidden" name="course"
                                                        value="<%= take.get(i).getCourse() %>"/>
                                                 <input type="number" name="grade"
@@ -166,7 +167,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <% } %>
+                                        <%
+                                                }
+                                            }
+                                        %>
                                         </tbody>
                                     </table>
                                 </section>
@@ -187,14 +191,15 @@
                                         <tbody>
 
                                         <%
-                                            for(int i = 0; i < student.size() && i % 2 == 1; i++) {
+                                            for(int i = 0; i < take.size(); i++) {
+                                                if(i % 2 == 1) {
                                         %>
                                         <tr>
-                                            <td><%= student.get(i).getName() %></td>
+                                            <td><%= take.get(i).getStudent() %></td>
                                             <td>
                                                 <form id="<%= i %>" method="post" action="grade">
                                                     <input type="hidden" name="student"
-                                                           value="<%= student.get(i).getName() %>"/>
+                                                           value="<%= take.get(i).getStudent() %>"/>
                                                     <input type="hidden" name="course"
                                                            value="<%= take.get(i).getCourse() %>"/>
                                                     <input type="number" name="grade"
@@ -208,7 +213,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <% } %>
+                                        <%
+                                                }
+                                            }
+                                        %>
                                         </tbody>
                                     </table>
                                 </section>

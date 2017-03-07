@@ -8,7 +8,7 @@
 <html lang="en" class="app">
 <head>
     <meta charset="utf-8"/>
-    <title>Notebook | Web Application</title>
+    <title>Course Registration</title>
     <meta name="description"
           content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -79,14 +79,14 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li class="active"><a href="homepage.jsp" class="active"> <i
+                                    <li><a href="homepage"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
-                                    <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
+                                    <li class="active"><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Admin</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-admin.jsp"> <i class="fa fa-angle-right"></i> <span>Management</span>
+                                            <li><a href="mycourse"> <i class="fa fa-angle-right"></i> <span>Management</span>
                                             </a></li>
                                         </ul>
                                     </li>
@@ -143,6 +143,7 @@
                         </form>
                     </aside>
                     <aside>
+                        <% String tabletype = (String) request.getAttribute("tabletype"); %>
                         <section class="vbox">
                             <header class="header bg-white b-b clearfix">
                                 <div class="row m-t-sm">
@@ -156,8 +157,19 @@
                                             <button type="button" class="btn btn-sm btn-default" title="Remove"><i
                                                     class="fa fa-trash-o"></i></button>
                                         </div>
-                                        <a href="modal.html" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i
+                                        <%
+                                            if(tabletype == "course") {
+                                        %>
+                                        <a href="addcourse.jsp" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i
                                                 class="fa fa-plus"></i> Create</a></div>
+                                        <%
+                                            } else {
+                                        %>
+                                        <a href="signup.jsp" data-toggle="ajaxModal" class="btn btn-sm btn-default"><i
+                                                class="fa fa-plus"></i> Create</a></div>
+                                    <%
+                                        }
+                                    %>
                                     <div class="col-sm-4 m-b-xs">
                                         <div class="input-group">
                                             <input type="text" class="input-sm form-control" placeholder="Search">
@@ -170,7 +182,6 @@
                             <section class="scrollable wrapper w-f">
                                 <section class="panel panel-default">
                                     <div class="table-responsive">
-                                        <% String tabletype = (String) request.getAttribute("tabletype"); %>
                                         <%
                                             if (tabletype == "student") {
                                                 ArrayList<DbUser> students = (ArrayList<DbUser>) request.getAttribute("student");
@@ -279,19 +290,23 @@
 
                                                 %>
                                                 <td>
-                                                    <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                              data-toggle="dropdown"><i
-                                                            class="fa fa-plus"></i></a>
-                                                    </div>
+                                                <form action="assignprofessor" method="post" id="<%= "c" + i%>">
+                                                    <input type="hidden" name="courseName"
+                                                           value="<%= course.get(i).getName() %>"/>
+                                                    <input type="hidden" value="1" name="state"/>
+                                                </form>
+                                                <a href="#" onclick="document.getElementById('<%= "c" + i%>').submit();" class="active" data-toggle="class"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
                                                 </td>
                                                 <%
                                                 } else {
                                                 %>
                                                 <td>
-                                                    <div class="btn-group"><a href="#" class="dropdown-toggle"
-                                                                              data-toggle="dropdown"><i
-                                                            class="fa fa-plus"></i></a>
-                                                    </div>
+                                                <form action="assignprofessor" method="post" id="<%= "c" + i%>">
+                                                    <input type="hidden" name="courseName"
+                                                           value="<%= course.get(i).getName() %>"/>
+                                                    <input type="hidden" value="2" name="state"/>
+                                                </form>
+                                                    <a href="#" onclick="document.getElementById('<%= "c" + i%>').submit();" data-toggle="class"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
                                                 </td>
                                                 <% } %>
                                                 <td class="text-right" >
@@ -299,7 +314,7 @@
                                                                               onclick="document.getElementById('<%= i %>').submit();"
                                                                               class="dropdown-toggle"
                                                                               data-toggle="dropdown"><i
-                                                            class="fa fa-plus"></i></a>
+                                                            class="fa fa-user"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

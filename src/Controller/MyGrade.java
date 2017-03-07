@@ -37,7 +37,8 @@ public class MyGrade extends HttpServlet {
                     request.getRequestDispatcher( "/table-student-grade.jsp").forward(request,response);
                     break;
                 case FAILED:
-                    response.getWriter().append("web wrong");
+                    request.setAttribute("take", dbTakes);
+                    request.getRequestDispatcher( "/table-student-grade.jsp").forward(request,response);
                     break;
                 default:
                     break;

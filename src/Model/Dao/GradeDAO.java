@@ -32,7 +32,7 @@ public class GradeDAO {
         int message = FAILED;
         String sql = "update malinda.take "
                 + "set grade = ? "
-                + "where name = ? and course = ? ";
+                + "where student = ? and course = ? ";
         if(validate(professor) == SUCCESS) {
             try {
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -81,13 +81,6 @@ public class GradeDAO {
         } catch (Exception e) {
             message = EXCEPTION;
             e.printStackTrace();
-        } finally {
-            try {
-                dbconn.close();
-            } catch (Exception e) {
-                message = EXCEPTION;
-                e.printStackTrace();
-            }
         }
         return message;
     }
@@ -131,12 +124,12 @@ public class GradeDAO {
             pstmt.setString(1, course);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                while (rs.next()) {
+               do {
                     DbTake dbTake = new DbTake();
                     dbTake.setAll(rs);
                     dbTake.setGrade(rs.getDouble("grade"));
                     arrayList.add(dbTake);
-                }
+                } while (rs.next());
                 message = SUCCESS;
             }
         } catch (Exception e) {

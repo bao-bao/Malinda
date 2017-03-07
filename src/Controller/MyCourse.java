@@ -33,7 +33,8 @@ public class MyCourse extends HttpServlet {
                     request.getRequestDispatcher("/table-professor.jsp").forward(request, response);
                     break;
                 case FAILED:
-                    response.getWriter().append("web wrong");
+                    request.setAttribute("course", courses);
+                    request.getRequestDispatcher("/table-professor.jsp").forward(request, response);
                     break;
                 default:
                     break;

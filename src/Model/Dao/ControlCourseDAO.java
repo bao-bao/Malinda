@@ -119,8 +119,7 @@ public class ControlCourseDAO {
         int message = SUCCESS;
         DbCourse dbCourse = new DbCourse();
         String search_sql = "select * from malinda.course where name = ? ";
-        String judge_sql = "select * from malinda.course where exists (select course from malinda.take where name = ?) ";
-        String update_sql = "update malinda.course set number = ? where name = ? ";
+        String judge_sql = "select * from malinda.course where course.name in (select course from malinda.take where student = ?) ";
         try {
             conn.setAutoCommit(false);
             // do search
@@ -150,19 +149,6 @@ public class ControlCourseDAO {
                             break;
                         }
                     } while (rs.next());
-                }
-            }
-            // do update
-            if(message == SUCCESS) {
-                PreparedStatement u_pstmt = conn.prepareStatement(update_sql);
-                u_pstmt.setInt(1, dbCourse.getNumber() - 1);
-                u_pstmt.setString(2, course);
-                int re = u_pstmt.executeUpdate();
-                if(re == 0) {
-                    message = FAILED;
-                }
-                else {
-                    message = SUCCESS;
                 }
             }
         } catch (Exception e) {
@@ -321,7 +307,7 @@ public class ControlCourseDAO {
 
     public int getAllCanRegisterCourse(String name, ArrayList<DbCourse> arrayList) {
         int message = FAILED;
-        String sql = "select * from malinda.course where not exists (select course from malinda.take where take.student = ?) and course.state = 1 ";
+        String sql = "select * from malinda.course where course.name not in (select course from malinda.take where take.student = ?) and course.state = 1 ";
         try {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -381,7 +367,7 @@ public class ControlCourseDAO {
 
     public int getAllUnassignedCourse(ArrayList<DbCourse> arrayList) {
         int message = FAILED;
-        String sql = "select * from malinda.course where not exists (select course from malinda.teach) ";
+        String sql = "select * from malinda.course where course.name not in (select course from malinda.teach) ";
         try {
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement(sql);

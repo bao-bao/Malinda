@@ -24,6 +24,7 @@ public class AssignProfessor extends HttpServlet {
         assert user != null;
         String name = user.getName();
         String course = request.getParameter("courseName");
+        String _state = request.getParameter("state");
         if (name != null && course != null) {
             String professor = request.getParameter("professorName");
             int message = DAOFactory.getControlCourseDAO().assignProfessor(professor, course);
@@ -37,8 +38,8 @@ public class AssignProfessor extends HttpServlet {
                     break;
             }
         }
-        Integer status = Integer.valueOf(request.getParameter("state"));
-        if(status != null && course != null) {
+        if(_state != null) {
+        Integer status = Integer.valueOf(_state);
             int state = (status==1 ? 2:1);
             int message = DAOFactory.getControlCourseDAO().changeState(user.getName(), course, state);
             switch (message) {
@@ -66,8 +67,8 @@ public class AssignProfessor extends HttpServlet {
                     case SUCCESS:
                         request.setAttribute("course", dbCourses);
                         ArrayList<DbTeach> teaches = new ArrayList<>();
-                        for (int i = 0; i < dbCourses.size(); i++) {
-                            int message1 = DAOFactory.getControlCourseDAO().getTeachedProfessor(dbCourses.get(i).getName(), teaches);
+                        for (DbCourse dbCourse : dbCourses) {
+                            int message1 = DAOFactory.getControlCourseDAO().getTeachedProfessor(dbCourse.getName(), teaches);
                             if (message1 == FAILED) {
                                 response.getWriter().append("web wrong");
                                 break;

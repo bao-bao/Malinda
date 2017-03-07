@@ -20,8 +20,9 @@ public class Grade extends HttpServlet {
         String name = user.getName();
         String student = request.getParameter("student");
         String course = request.getParameter("course");
-        Double grade = Double.valueOf(request.getParameter("grade"));
-        if(name != null && course != null) {
+        String _grade = request.getParameter("grade");
+        if(name != null && course != null && _grade != null) {
+            Double grade = Double.valueOf(_grade);
             int message = DAOFactory.getGradeDAO().submitGrade(name, student, course, grade);
             switch (message) {
                 case SUCCESS:

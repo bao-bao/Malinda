@@ -6,7 +6,7 @@
 <html lang="en" class="app">
 <head>
     <meta charset="utf-8"/>
-    <title>Notebook | Web Application</title>
+    <title>Course Registration</title>
     <meta name="description"
           content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -77,7 +77,7 @@
                              data-size="5px" data-color="#333333"> <!-- nav -->
                             <nav class="nav-primary hidden-xs">
                                 <ul class="nav">
-                                    <li class="active"><a href="homepage.jsp" class="active"> <i
+                                    <li><a href="homepage" class="active"> <i
                                             class="fa fa-dashboard icon"> <b class="bg-danger"></b> </i>
                                         <span>Home Page</span> </a></li>
                                     <li><a href="#"> <i class="fa fa-columns icon"> <b class="bg-warning"></b>
@@ -92,11 +92,11 @@
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Professor</span> </a>
                                         <ul class="nav lt">
-                                            <li><a href="table-professor.jsp"> <i class="fa fa-angle-right"></i>
+                                            <li><a href="mycourse"> <i class="fa fa-angle-right"></i>
                                                 <span>My Courses</span> </a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="#"> <i class="fa fa-pencil icon"> <b class="bg-info"></b>
+                                    <li class="active"><a href="#"> <i class="fa fa-pencil icon"> <b class="bg-info"></b>
                                     </i> <span class="pull-right"> <i class="fa fa-angle-down text"></i> <i
                                             class="fa fa-angle-up text-active"></i> </span> <span>Students</span> </a>
                                         <ul class="nav lt">
@@ -143,7 +143,8 @@
                                             </thead>
                                             <tbody>
                                             <%
-                                                for(int i = 0; i < takes.size() && i%2 == 0; i++) {
+                                                for(int i = 0; i < takes.size(); i++) {
+                                                     if(i%2 == 0) {
                                             %>
                                             <tr>
                                                 <td><%= takes.get(i).getCourse() %></td>
@@ -153,7 +154,10 @@
                                                 <td><%= takes.get(i).getGrade() %></td>
                                                 <% } %>
                                             </tr>
-                                            <% } %>
+                                            <%
+                                                    }
+                                                }
+                                            %>
                                             </tbody>
                                         </table>
                                     </section>
@@ -172,17 +176,20 @@
                                             </thead>
                                             <tbody>
                                             <%
-                                                for(int i = 0; i < takes.size() && i%2 == 1; i++) {
+                                                for(int j = 0; j < takes.size(); j++) {
+                                                    if(j%2 == 1) {
                                             %>
                                             <tr>
-                                                <td><%= takes.get(i).getCourse() %></td>
-                                                <% if(takes.get(i).getGrade() == 0.0) {%>
+                                                <td><%= takes.get(j).getCourse() %></td>
+                                                <% if(takes.get(j).getGrade() == 0.0) {%>
                                                 <td><%= '-' %></td>
                                                 <% } else { %>
-                                                <td><%= takes.get(i).getGrade() %></td>
+                                                <td><%= takes.get(j).getGrade() %></td>
                                                 <% } %>
                                             </tr>
-                                            <% } %>
+                                            <%      }
+                                                }
+                                            %>
                                             </tbody>
                                         </table>
                                     </section>
