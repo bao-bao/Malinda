@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 import static Model.Dao.DAOFactory.*;
 import static Model.Vo.DbUser.*;
@@ -26,11 +27,11 @@ public class Maintain extends HttpServlet {
             Integer age = Integer.valueOf(request.getParameter("age"));
             String _level = request.getParameter("level");
             Integer level;
-            if (_level.toLowerCase() == "administrator") {
+            if (Objects.equals(_level.toLowerCase(), "administrator")) {
                 level = ADMINISTRATOR;
-            } else if (_level.toLowerCase() == "student") {
+            } else if (Objects.equals(_level.toLowerCase(), "student")) {
                 level = STUDENT;
-            } else if (_level.toLowerCase() == "professor") {
+            } else if (Objects.equals(_level.toLowerCase(), "professor")) {
                 level = PROFESSOR;
             } else {
                 level = STUDENT;
