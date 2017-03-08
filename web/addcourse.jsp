@@ -15,7 +15,7 @@
         Register</a>
         <section class="panel panel-default m-t-lg bg-white">
             <header class="panel-heading text-center"><strong>Add Course</strong></header>
-            <form action="maintain" method="post" class="panel-body wrapper-lg">
+            <form action="addcourse" method="post" class="panel-body wrapper-lg">
                 <div class="form-group">
                     <label class="control-label">Name</label>
                     <input type="text" placeholder="eg. math" class="form-control input-lg" name="name">
